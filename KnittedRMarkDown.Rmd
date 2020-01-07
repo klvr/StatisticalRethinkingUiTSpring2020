@@ -1,0 +1,29 @@
+---
+title: "Homework for Statistical Rethinking"
+subtitle: "UiT, Spring 2020"
+author: "Kristoffer Klevjer"
+date: "Current / knitted date: `r Sys.Date()`"
+output: html_document
+---
+***
+## Week One
+***
+### Task 1
+Suppose the globe tossing data had turned out to be 8 water in 15 tosses. Construct the posterior distribution, using grid approximation. Use the same flat prior as before.
+
+### My solution - Task 1
+Blabla
+
+***
+### Task 2
+Start over in **1**, but now use a prior that is zero below _p_ = 0.5. This corresponds to prior information that a majority of the Earth's surface is water. What difference does the better prior make? If it helps, compare posterior distributions (using both priors) to the true value _p_ = 0.7.
+
+### My solution - Task 2
+Blabla
+
+***
+### Task 3
+This problem is more open-ended than the others. Feel free to collaborate on the solution. Suppose you want to estimate the Earth's proportion of water very precisely. Specifically, you want the 99% percentile interval of the posterior distribution of _p_ to be only 0.05 wide. This means the distance between the upper and lower bound of the interval should be 0.05. How many times will you have to toss the globe to do this? I won't require a precise answer. I'm honestly more interested in your approach.
+
+### My solution - Task 3
+Blabla
