@@ -371,8 +371,19 @@ summary {
 
 
 <hr />
-<div id="week-one" class="section level1">
-<h1>Week One</h1>
+<div id="precursers" class="section level3">
+<h3>Precursers</h3>
+<ol style="list-style-type: decimal">
+<li>Install (R)Stan. Go to <a href="mc-stan.org">mc-stan.org</a>, or <a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started">directly here</a> for RStan, follow all instructions including “Loading the package”. PS: I had a lot of problems the first time, as I didn’t have R v3.4.0 or later and/or RStudio v1.2.x or later.</li>
+<li>Install the following packages: install.packages(c(“coda”, “mvtnorm”, “devtools”, “loo”))</li>
+<li>Load devtools: library(devtools)</li>
+<li>Install the rethinking package: devtools::install_github(“rmcelreath/rethinking”, ref=“Experimental”)</li>
+<li>Pray that you didn’t get any breaking-worthy errors, I got an error in the rethinking package related to serialized objects, however as this package is solely for learning, and not using Rstan, I’ll take my chances.</li>
+</ol>
+<hr />
+</div>
+<div id="week-one" class="section level2">
+<h2>Week One</h2>
 <hr />
 <div id="task-1" class="section level3">
 <h3>Task 1</h3>
