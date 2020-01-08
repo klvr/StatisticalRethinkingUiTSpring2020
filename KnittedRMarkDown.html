@@ -365,7 +365,7 @@ summary {
 <h1 class="title toc-ignore">Homework for Statistical Rethinking</h1>
 <h3 class="subtitle">UiT, Spring 2020</h3>
 <h4 class="author">Kristoffer Klevjer</h4>
-<h4 class="date">Current / knitted date: 2020-01-07</h4>
+<h4 class="date">Current / knitted date: 2020-01-08</h4>
 
 </div>
 
@@ -384,6 +384,7 @@ summary {
 </div>
 <div id="week-one" class="section level2">
 <h2>Week One</h2>
+<p>Overall: We are tossing a small globe around the room, and record whether our right index finger lands on Water or Land when catching it. Assuming the globe is a fair representation of Earth, we can use the data we obtain to estimate the proportion of water to land on the Earth’s surface.</p>
 <hr />
 <div id="task-1" class="section level3">
 <h3>Task 1</h3>
@@ -391,7 +392,21 @@ summary {
 </div>
 <div id="my-solution---task-1" class="section level3">
 <h3>My solution - Task 1</h3>
-<p>Blabla</p>
+<p>In this task, we assume that we have no prior knowledge about the Earth’s proportion of water to land, i.e., we have a flat prior, with all values being equally likely.</p>
+<p>In this task, we can use grid approximation (fine grid instead of integrals, often computationally intensive with increased amounts of data/complexity).</p>
+<pre class="r"><code>p_grid &lt;- seq(from = 0, to = 1, length = 1000) #grid of 1000
+prob_p &lt;- rep(1, 1000) #flat prior
+prob_data &lt;- dbinom(8, size = 15, prob = p_grid)
+posterior &lt;- prob_data * prob_p # taking the prior into account, not needed in this example
+posteriornorm &lt;- posterior / sum(posterior) #normalizing
+set.seed(100)
+samples &lt;- sample(p_grid, prob = posteriornorm, size = 1000, replace = TRUE)
+mean(samples) #point estimate of the true proportion of water</code></pre>
+<pre><code>## [1] 0.5214925</code></pre>
+<pre class="r"><code>quantile(samples, probs = c(0.05, 0.95)) #95% CI</code></pre>
+<pre><code>##        5%       95% 
+## 0.3201702 0.7087588</code></pre>
+<p>In short, given the prior and the observed data, our best estimate for the true proportion of water to land is <code>0.5214925</code> (95%CI: <code>0.3201702</code> to <code>0.7087588</code>).</p>
 <hr />
 </div>
 <div id="task-2" class="section level3">
@@ -400,7 +415,20 @@ summary {
 </div>
 <div id="my-solution---task-2" class="section level3">
 <h3>My solution - Task 2</h3>
-<p>Blabla</p>
+<p>We can use the same code as above, only we adjust the prior probability.</p>
+<pre class="r"><code>p_grid &lt;- seq(from = 0, to = 1, length = 1000) #grid of 1000
+prob_p &lt;- c(rep(0, 500), rep(1, 500)) #new prior
+prob_data &lt;- dbinom(8, size = 15, prob = p_grid)
+posterior &lt;- prob_data * prob_p # taking the prior into account, not needed in this example
+posteriornorm &lt;- posterior / sum(posterior) #normalizing
+set.seed(100)
+samples &lt;- sample(p_grid, prob = posteriornorm, size = 1000, replace = TRUE)
+mean(samples) #point estimate of the true proportion of water</code></pre>
+<pre><code>## [1] 0.6035395</code></pre>
+<pre class="r"><code>quantile(samples, probs = c(0.05, 0.95)) #95% CI</code></pre>
+<pre><code>##        5%       95% 
+## 0.5095095 0.7347347</code></pre>
+<p>In short, given the <em>new</em> prior and the observed data, our best estimate for the true proportion of water to land is <code>0.6035395</code> (95%CI: <code>0.5095095</code> to <code>0.7347347</code>). As we can see, this brings us close to the true proportion of <span class="math inline">\(\sim 0.7\)</span>, as well as provides a narrower intervall.</p>
 <hr />
 </div>
 <div id="task-3" class="section level3">
