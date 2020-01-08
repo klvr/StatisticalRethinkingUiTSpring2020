@@ -16,20 +16,51 @@ output: html_document
 
 ***
 ## Week One
+Overall: We are tossing a small globe around the room, and record whether our right index finger lands on Water or Land when catching it. Assuming the globe is a fair representation of Earth, we can use the data we obtain to estimate the proportion of water to land on the Earth's surface.
+
 
 ***
 ### Task 1
 Suppose the globe tossing data had turned out to be 8 water in 15 tosses. Construct the posterior distribution, using grid approximation. Use the same flat prior as before.
 
 ### My solution - Task 1
-Blabla
+In this task, we assume that we have no prior knowledge about the Earth's proportion of water to land, i.e., we have a flat prior, with all values being equally likely.
+
+In this task, we can use grid approximation (fine grid instead of integrals, often computationally intensive with increased amounts of data/complexity).
+
+```{r}
+p_grid <- seq(from = 0, to = 1, length = 1000) #grid of 1000
+prob_p <- rep(1, 1000) #flat prior
+prob_data <- dbinom(8, size = 15, prob = p_grid)
+posterior <- prob_data * prob_p # taking the prior into account, not needed in this example
+posteriornorm <- posterior / sum(posterior) #normalizing
+set.seed(100)
+samples <- sample(p_grid, prob = posteriornorm, size = 1000, replace = TRUE)
+mean(samples) #point estimate of the true proportion of water
+quantile(samples, probs = c(0.05, 0.95)) #95% CI
+```
+
+In short, given the prior and the observed data, our best estimate for the true proportion of water to land is ```r mean(samples)``` (95%CI: ```r quantile(samples, probs=(0.05))``` to ```r quantile(samples, probs=(0.95))```).
 
 ***
 ### Task 2
 Start over in **1**, but now use a prior that is zero below _p_ = 0.5. This corresponds to prior information that a majority of the Earth's surface is water. What difference does the better prior make? If it helps, compare posterior distributions (using both priors) to the true value _p_ = 0.7.
 
 ### My solution - Task 2
-Blabla
+We can use the same code as above, only we adjust the prior probability.
+```{r}
+p_grid <- seq(from = 0, to = 1, length = 1000) #grid of 1000
+prob_p <- c(rep(0, 500), rep(1, 500)) #new prior
+prob_data <- dbinom(8, size = 15, prob = p_grid)
+posterior <- prob_data * prob_p # taking the prior into account, not needed in this example
+posteriornorm <- posterior / sum(posterior) #normalizing
+set.seed(100)
+samples <- sample(p_grid, prob = posteriornorm, size = 1000, replace = TRUE)
+mean(samples) #point estimate of the true proportion of water
+quantile(samples, probs = c(0.05, 0.95)) #95% CI
+```
+
+In short, given the _new_ prior and the observed data, our best estimate for the true proportion of water to land is ```r mean(samples)``` (95%CI: ```r quantile(samples, probs=(0.05))``` to ```r quantile(samples, probs=(0.95))```). As we can see, this brings us close to the true proportion of $\sim 0.7$, as well as provides a narrower intervall.
 
 ***
 ### Task 3
