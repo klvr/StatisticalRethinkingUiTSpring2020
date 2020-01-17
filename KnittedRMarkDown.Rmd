@@ -1,9 +1,10 @@
 ---
 title: "Homework for Statistical Rethinking"
-subtitle: "UiT, Spring 2020"
 author: "Kristoffer Klevjer"
-date: "Current / knitted date: `r Sys.Date()`"
-output: html_document
+date: 'Current / knitted date: `r Sys.Date()`'
+output:
+  html_document: default
+subtitle: UiT, Spring 2020
 ---
 ***
 ### Precursers
@@ -134,4 +135,4 @@ lines(density(samples4), col="orange")
 abline(v=0.7, col="purple") #calling the line for the true proportion
 ```
 
-As we can see, the doubleing of throws does not do a whole lot for the model, this is because we enter an area of dimishing returnes, where each new case gets a smaller and smaller impact, due to the large number of previous trials.
+As we can see, the doubleing of throws does not do a whole lot for the model, this is because we enter an area of dimishing returnes, where each new case gets a smaller and smaller impact, due to the large number of previous trials (might not be the case in every setup).
