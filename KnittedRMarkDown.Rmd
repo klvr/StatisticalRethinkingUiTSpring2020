@@ -139,5 +139,105 @@ As we can see, the doubleing of throws does not do a whole lot for the model, th
 
 ***
 ## Week Two
-Bla
+
+***
+### Task 1
+The weights listed below were recorded in the !Kung census, but heights were not recorded for these individuals. Provide predicted heights and 89% compatibility intervals for each of these individuals. That is, fill in the table below, using model-based predictions.
+
+### Task 1 - My solution
+
+Using the provided dataset, and code from the book (page 78->):
+```{r, echo=FALSE, results='hide', message=FALSE}
+library(rethinking)
+```
+
+```{r, echo=TRUE}
+data(Howell1)
+d <- Howell1
+str(d)
+dens(d)
+```
+
+As we can see, the data is somewhat messy, so we attempt to split the data into two groups, adults and children:
+
+```{r}
+dc <- d[d$age < 18,]
+da <- d[d$age >= 18,]
+dens(dc)
+dens(da)
+```
+
+This make both sub-data set's distribution look a lot closer to normally distributed, as should be expected for weight and height. In our predictions, we use the adult subset, as this contains far more values for our weight from which height should be predicted.
+
+Next we need some priors, I choose to use what I belive to be the average height now, minus 5cm, as this a old data-set, giving a mean of 167, with SD of roughly 30cm. We can plot this:
+
+```{r}
+curve(dnorm(x, 168, 30), from=100, to=250)
+```
+
+And a uniform SD prior:
+```{r}
+curve(dunif(x, 0, 50), from=-10, to=60)
+```
+
+Using quadratic approximation, assuming a linear relationsship: 
+```{r}
+xbar <- mean(da$weight)
+m4.1 <- quap(
+  alist(
+    height ~ dnorm(mu,sigma),
+    mu <- a + b * (weight - xbar),
+    a ~ dnorm(168,30),
+    b ~ dlnorm(0,1),
+    sigma ~ dunif(0,50)
+  ),
+data=da)
+precis(m4.1)
+```
+
+Next we need to predict values for height, based on weight in our model:
+
+```{r}
+wgs <- data.frame(weight=seq(from=31, to=65, by=1))
+estheight <- sim(m4.1, data=wgs)
+Eh <- apply(estheight,2,mean)
+Eh_ci <- apply(estheight,2,PI,prob=0.89)
+dat <- cbind(wgs, Eh, Eh_ci[1,], Eh_ci[2,])
+round(dat,1)
+```
+
+***
+### Task 2
+Model the relationship between height(cm) and thenatural logarithm of weight (log-kg): log(weight). Use the entire Howell1 data frame, all 544 rows, adults and non-adults. Use any model type from Chapter 4 that you think useful: an ordinary linear regression, a polynomial or a spline. Plot the posterior predictions against the raw data.
+
+### Task 2 - My solution
+Simply juse the code above (ordinary linear regression), slightly modified.
+```{r}
+d$logweight <- log(d$weight)
+xbar <- mean(d$logweight)
+m4.1 <- quap(
+  alist(
+    height ~ dnorm(mu,sigma),
+    mu <- a + b * (logweight - xbar),
+    a ~ dnorm(168,30),
+    b ~ dlnorm(0,1),
+    sigma ~ dunif(0,50)
+  ),
+data=d)
+precis(m4.1)
+```
+
+And plotted against the raw data:
+```{r}
+plot( d$weight , d$height) 
+x_seq <- log(1:60) #Huh?
+mu <- sim(m4.1 , data=list(logweight=x_seq) )
+mu_mean <- apply(mu,2,mean)
+mu_ci <- apply(mu,2,PI,0.99) 
+lines( exp(x_seq) , mu_mean, col='red' ) 
+shade( mu_ci , exp(x_seq) )
+```
+
+
+
 
