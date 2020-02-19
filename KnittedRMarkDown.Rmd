@@ -136,3 +136,8 @@ abline(v=0.7, col="purple") #calling the line for the true proportion
 ```
 
 As we can see, the doubleing of throws does not do a whole lot for the model, this is because we enter an area of dimishing returnes, where each new case gets a smaller and smaller impact, due to the large number of previous trials (might not be the case in every setup).
+
+***
+## Week Two
+Bla
+
